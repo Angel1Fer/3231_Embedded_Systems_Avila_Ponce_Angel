@@ -1,0 +1,12 @@
+Plotted to 'C:\Users\Angel\OneDrive\Desktop\Embedded.2\Phil_lab_65_Avila-F_Cu.gbr'.
+Plotted to 'C:\Users\Angel\OneDrive\Desktop\Embedded.2\Phil_lab_65_Avila-B_Cu.gbr'.
+Plotted to 'C:\Users\Angel\OneDrive\Desktop\Embedded.2\Phil_lab_65_Avila-F_Paste.gbr'.
+Plotted to 'C:\Users\Angel\OneDrive\Desktop\Embedded.2\Phil_lab_65_Avila-B_Paste.gbr'.
+Plotted to 'C:\Users\Angel\OneDrive\Desktop\Embedded.2\Phil_lab_65_Avila-F_Silkscreen.gbr'.
+Plotted to 'C:\Users\Angel\OneDrive\Desktop\Embedded.2\Phil_lab_65_Avila-B_Silkscreen.gbr'.
+Plotted to 'C:\Users\Angel\OneDrive\Desktop\Embedded.2\Phil_lab_65_Avila-F_Mask.gbr'.
+Plotted to 'C:\Users\Angel\OneDrive\Desktop\Embedded.2\Phil_lab_65_Avila-B_Mask.gbr'.
+Plotted to 'C:\Users\Angel\OneDrive\Desktop\Embedded.2\Phil_lab_65_Avila-Edge_Cuts.gbr'.
+Created Gerber job file 'C:\Users\Angel\OneDrive\Desktop\Embedded.2\Phil_lab_65_Avila-job.gbrjob'.
+Info: Done.
+Info: Done.
