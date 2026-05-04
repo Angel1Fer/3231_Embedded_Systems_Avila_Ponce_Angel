@@ -1,0 +1,14 @@
+Info: X scale constrained.
+Info: Y scale constrained.
+Info: Output directory 'C:\Users\Angel\OneDrive\Desktop\Embedded.2\gerber' created.
+Plotted to 'C:\Users\Angel\OneDrive\Desktop\Embedded.2\gerber\2026_12_2Wheel_Balance_Robot_Avila Version-F_Cu.gbr'.
+Plotted to 'C:\Users\Angel\OneDrive\Desktop\Embedded.2\gerber\2026_12_2Wheel_Balance_Robot_Avila Version-B_Cu.gbr'.
+Plotted to 'C:\Users\Angel\OneDrive\Desktop\Embedded.2\gerber\2026_12_2Wheel_Balance_Robot_Avila Version-F_Paste.gbr'.
+Plotted to 'C:\Users\Angel\OneDrive\Desktop\Embedded.2\gerber\2026_12_2Wheel_Balance_Robot_Avila Version-B_Paste.gbr'.
+Plotted to 'C:\Users\Angel\OneDrive\Desktop\Embedded.2\gerber\2026_12_2Wheel_Balance_Robot_Avila Version-F_Silkscreen.gbr'.
+Plotted to 'C:\Users\Angel\OneDrive\Desktop\Embedded.2\gerber\2026_12_2Wheel_Balance_Robot_Avila Version-B_Silkscreen.gbr'.
+Plotted to 'C:\Users\Angel\OneDrive\Desktop\Embedded.2\gerber\2026_12_2Wheel_Balance_Robot_Avila Version-F_Mask.gbr'.
+Plotted to 'C:\Users\Angel\OneDrive\Desktop\Embedded.2\gerber\2026_12_2Wheel_Balance_Robot_Avila Version-B_Mask.gbr'.
+Plotted to 'C:\Users\Angel\OneDrive\Desktop\Embedded.2\gerber\2026_12_2Wheel_Balance_Robot_Avila Version-Edge_Cuts.gbr'.
+Created Gerber job file 'C:\Users\Angel\OneDrive\Desktop\Embedded.2\gerber\2026_12_2Wheel_Balance_Robot_Avila Version-job.gbrjob'.
+Info: Done.

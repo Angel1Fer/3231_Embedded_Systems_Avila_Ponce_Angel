@@ -1,0 +1,27 @@
+Drill report for 2026_12_2Wheel_Balance_Robot_Avila Version.kicad_pcb
+Created on 2026-05-03T22:33:04
+
+Copper Layer Stackup:
+    =============================================================
+    L1 :  F.Cu                      front
+    L2 :  B.Cu                      back
+
+
+Drill file '2026_12_2Wheel_Balance_Robot_Avila Version-PTH-drl.gbr' contains
+    plated through holes:
+    =============================================================
+    T1  0.300mm  0.0118"  (41 holes))
+    T2  0.600mm  0.0236"  (4 holes)  (with 4 slots)
+    T3  0.950mm  0.0374"  (9 holes))
+    T4  1.000mm  0.0394"  (26 holes))
+
+    Total plated holes count 80
+
+
+Drill file '2026_12_2Wheel_Balance_Robot_Avila Version-NPTH-drl.gbr' contains
+    unplated through holes:
+    =============================================================
+    T1  0.650mm  0.0256"  (2 holes))
+    T2  0.900mm  0.0354"  (4 holes))
+
+    Total unplated holes count 6
