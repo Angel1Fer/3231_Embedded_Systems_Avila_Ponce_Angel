@@ -1,0 +1,49 @@
+3-Wheel Robot —  WiFi-Controlled Robot
+
+A fully custom-built, three- wheel self-balancing robot designed and engineered from scratch. This includes a custom-designed chassis, a purpose-built PCB, and firmware for remote control over WiFi.
+
+---
+
+## 📖 Project Overview
+
+This project describes a **2-wheel balance robot system**. While many designs exist online, every component here was built from the ground up:
+
+-  **Chassis** designed in [OnShape](https://www.onshape.com/)
+-  **Custom PCB** integrating motor drivers, IMU, encoders, and WiFi
+-  **Remote control** via WiFi using a smartphone
+
+
+##  Features
+
+| Feature | Details |
+|---|---|
+| **Microcontroller** | STM32F401RBT6 — 64-pin LQFP package |
+| **Chassis** | Custom design via OnShape CAD |
+| **PCB** | Fully custom board designed in-house |
+| **Motor Driver** | Integrated on PCB |
+| **IMU** | On-board inertial measurement unit for balancing |
+| **Encoders** | Motor encoders for closed-loop control |
+| **Connectivity** | WiFi shield for smartphone remote control |
+| **Interfaces Used** | Timers, PWM, Encoders, I2C, UART |
+
+
+## Hardware
+
+### Microcontroller
+The **STM32F401RBT6** Pins were carefully selected to interface all required hardware using:
+- **Timers & PWM** — Motor speed control
+- **Encoders** — Motor position/velocity feedback
+- **I2C** — IMU communication
+- **UART** — Debugging and serial communication
+
+### PCB
+The custom PCB integrates all components onto a single board:
+- Motor driver circuitry
+- IMU sensor
+- Encoder interfaces
+- WiFi shield connectivity
+
+### Chassis
+Designed from scratch in **OnShape**, optimized for the balancing dynamics of a 2-wheel configuration.
+
+
