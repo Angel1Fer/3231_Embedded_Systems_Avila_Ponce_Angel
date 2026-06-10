@@ -1,6 +1,6 @@
-# 🤖 3-Wheel Robot — Self-Balancing WiFi-Controlled Robot
+3-Wheel Robot —  WiFi-Controlled Robot
 
-A fully custom-built, two-wheel self-balancing robot designed and engineered from scratch. This includes a custom-designed chassis, a purpose-built PCB, and firmware for remote control over WiFi.
+A fully custom-built, three- wheel self-balancing robot designed and engineered from scratch. This includes a custom-designed chassis, a purpose-built PCB, and firmware for remote control over WiFi.
 
 ---
 
@@ -8,17 +8,12 @@ A fully custom-built, two-wheel self-balancing robot designed and engineered fro
 
 This project describes a **2-wheel balance robot system**. While many designs exist online, every component here was built from the ground up:
 
-- 🏗️ **Chassis** designed in [OnShape](https://www.onshape.com/)
-- 🔌 **Custom PCB** integrating motor drivers, IMU, encoders, and WiFi
-- 📱 **Remote control** via WiFi using a smartphone
-- ⚖️ **Active balancing** using sensor fusion and a control loop
-- 🎯 **Additional challenge layer** planned to spice up the balancing system
+-  **Chassis** designed in [OnShape](https://www.onshape.com/)
+-  **Custom PCB** integrating motor drivers, IMU, encoders, and WiFi
+-  **Remote control** via WiFi using a smartphone
 
-> The robot started as a 3-wheel platform. The ball wheel was later removed to transition to a 2-wheel self-balancing configuration — making balance control a core challenge.
 
----
-
-## ✨ Features
+##  Features
 
 | Feature | Details |
 |---|---|
@@ -31,12 +26,11 @@ This project describes a **2-wheel balance robot system**. While many designs ex
 | **Connectivity** | WiFi shield for smartphone remote control |
 | **Interfaces Used** | Timers, PWM, Encoders, I2C, UART |
 
----
 
-## 🛠️ Hardware
+## Hardware
 
 ### Microcontroller
-The **STM32F401RBT6** was chosen for its rich peripheral support. Pins were carefully selected to interface all required hardware using:
+The **STM32F401RBT6** Pins were carefully selected to interface all required hardware using:
 - **Timers & PWM** — Motor speed control
 - **Encoders** — Motor position/velocity feedback
 - **I2C** — IMU communication
@@ -52,6 +46,4 @@ The custom PCB integrates all components onto a single board:
 ### Chassis
 Designed from scratch in **OnShape**, optimized for the balancing dynamics of a 2-wheel configuration.
 
----
 
-## 📁 Repository Structure
