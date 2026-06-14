@@ -20,23 +20,23 @@
 
 ## 1. Abstract
 
-This report covers a two-wheel self-balancing robot built around an STM32F401RBT6 microcontroller, designed entirely from scratch for ENCE 3231. Unlike reference designs, we created our own PCB, chassis, and firmware from the ground up. The full embedded stack includes a custom KiCad PCB with the MCU, motor driver, IMU, magnetic encoders, and a WiFi module that lets a phone drive the robot and read back live telemetry. The chassis was designed in OnShape and 3D printed. The robot started as a 3-wheel platform; the ball wheel was later removed to transition into a 2-wheel self-balancing configuration, making balance control the core challenge.
+For our final project in ENCE 3231 we built a two-wheel self-balancing robot using an STM32F401RBT6 microcontroller. Everything was made from scratch — the PCB, the chassis, and the firmware. The goal was to control the robot over WiFi from a phone and eventually turn it into a self-balancing system. We were able to get the WiFi connection established and verified that the motors work independently using PWM signals, but we were not able to get the robot driving as a full system by the end of the semester.
 
 ---
 
 ## 2. Introduction
 
-A self-balancing robot is the classic inverted-pendulum problem in mobile form: two wheels on one axis, a body that wants to tip over, and a controller that drives the wheels just enough — and in the right direction — to keep it upright. It is a strong project for an embedded systems course because every layer of the stack has to work together. The sensors must be read quickly and fused well, the motors must react with low latency, and the control loop must run at a steady rate or the robot falls over.
+A two-wheel balancing robot is basically an inverted pendulum on wheels. It naturally wants to fall over, and the job of the controller is to keep spinning the wheels fast enough in the right direction to stay upright. What makes it a good embedded systems project is that everything has to work at the same time — reading sensors, driving motors, and running a control loop, all without any one task slowing the others down.
 
-Our goal was to build the entire system ourselves — no reference PCB, no prefab chassis — and then add an extra challenge on top of the balancing system once the base is working.
+We wanted to build ours completely from scratch instead of using a kit or a reference board. That meant designing the PCB ourselves, modeling and printing the chassis in OnShape, and writing the firmware from the ground up using STM32CubeMX and CubeIDE.
 
 ---
 
 ## 3. System Overview
 
-The design is built around the STM32F401RBT6. Each sensor and actuator hangs off one of its peripherals. The ESP8266 Wi-Fi module sits on a UART and works like a wireless cable, so a phone or laptop can drive the robot and watch telemetry from a browser.
+The whole system runs off the STM32F401RBT6. Each part of the robot connects to one of its peripherals. The ESP8266 handles the WiFi side and connects over UART, so a phone can send drive commands and receive telemetry from the robot.
 
-The main parts are:
+Here are the main components:
 
 | Block | Part | Interface to MCU |
 |---|---|---|
@@ -53,101 +53,99 @@ The main parts are:
 
 ### 4.1 Microcontroller and Peripheral Mapping
 
-The board uses an STM32F401RBT6. It has enough timers, two I²C buses, a UART, and PWM outputs, which is what we need to talk to two separate sensors, drive a timing-sensitive motor driver, and run a UART link to the ESP8266 without bit-banging anything.
-
-The pins were set up in STM32CubeMX so every peripheral maps onto the F401's resources without conflicts: the two I²C buses, the motor PWM and direction lines, the UART to the ESP8266, and SWD/USB.
+We used the STM32F401RBT6 because it has two I²C buses, enough timers for PWM and encoder reading, and a UART for the ESP8266 — everything we needed without having to bit-bang anything. We mapped out all the pins in STM32CubeMX before starting the schematic to make sure nothing conflicted.
 
 ### 4.2 Schematic
 
-The schematic was designed in KiCad from scratch. It breaks the system into power input and regulation, the MCU and its crystal, the TB6612 motor driver, the two I²C sensor headers, and the ESP8266 connector.
+The schematic was made in KiCad. We broke it into sections: power regulation, the MCU and crystal, the TB6612 motor driver, the IMU and encoder headers, and the ESP8266 connector. Designing it from scratch meant we had to look up every datasheet and figure out the support circuitry ourselves.
 
-The full-resolution schematic is included as `figures/schematic.pdf`, and the editable KiCad source is under `hardware/schematic/`.
+The schematic PDF is saved under `PCB Phase/` and the KiCad source files are there too.
 
-### 4.3 PCB Layout and 3D Renders
+### 4.3 PCB Layout
 
-The PCB layout and routing were the main hands-on part of this project. We placed the components and routed the board in KiCad. The editable PCB project, gerbers, and drill files are under `PCB Layout/`.
+We laid out and routed the PCB in KiCad. It took a few tries to get the traces clean and avoid crossing signals. The final board has all the blocks labeled and fits everything onto one compact board. Gerber files are included under `PCB Phase/`.
 
 ### 4.4 Bill of Materials
 
-There is an interactive HTML BOM so you can cross-check component placement against the layout:
+We made an interactive BOM using KiCad so you can see where each component sits on the board:
 
 - [`STM32 PCB/BOM/ibom.html`](STM32%20PCB/BOM/ibom.html) (open in a browser)
 
 ### 4.5 Fabrication and Assembly
 
-The bare boards were fabricated externally. We hand-soldered the board in the lab. The STM32F401RBT6 in its fine-pitch 64-pin LQFP package was the most difficult part to solder by hand.
+The boards were ordered from an online fab house. We soldered everything by hand in the lab. The STM32 was the hardest part — 64 pins in an LQFP package with very fine pitch. Soldering that by hand is where most assembly issues tend to come from.
 
 ### 4.6 Chassis
 
-The chassis was designed entirely in OnShape. It is a custom structure that everything mounts to: the PCB, the two gear motors, and the battery holder. All dimensions were measured to line up with the mounting points on the hardware. The chassis CAD files are under `Assembely/`.
+The chassis was designed in OnShape. We made it to fit the PCB, two gear motors, and a battery holder, with mounting holes lined up to the actual hardware dimensions. The files are under `Assembely Phase/`.
 
 ---
 
 ## 5. Firmware Design
 
-The firmware is an STM32CubeIDE project (`Program/`). CubeMX generates the peripheral init, and the application code goes in the `USER CODE` sections. The main files:
+The firmware was written in STM32CubeIDE. CubeMX handled the peripheral setup and we wrote the application code in the USER CODE sections. Main source files:
 
-- `Program/Core/Src/main.c` — scheduler, telemetry, command handling
-- `Program/Core/Src/motor_driver.c` — TB6612 motor driver
-- `Program/Core/Src/encoder.c` — magnetic encoder
-- `Program/Core/Src/imu.c` — MPU6050 + complementary filter
-- `Program/Core/Src/wifi.c` — ESP8266 UART communication
+- `main.c` — main loop, scheduler, command handling
+- `motor_driver.c` — PWM control for the TB6612
+- `encoder.c` — reading wheel position
+- `imu.c` — MPU6050 driver and complementary filter
+- `wifi.c` — sending and receiving data over UART to the ESP8266
 
 ### 5.1 Architecture
 
-The application uses a cooperative super-loop with a simple tick-based scheduler built on `HAL_GetTick()`. Each task runs on its own interval, which keeps timing predictable without needing an RTOS:
+We used a simple super-loop scheduler based on `HAL_GetTick()`. Each task checks if its interval has passed before running, so everything stays on its own timing without needing an RTOS:
 
 | Task | Rate | What it does |
 |---|---|---|
-| Heartbeat LED | 100 ms | Toggles the user LED so the loop is visibly alive |
-| IMU + complementary filter | 10 ms (100 Hz) | Reads the MPU6050 and updates the fused angle |
-| Telemetry | 100 ms | Packs speed/angle and ships it over UART |
-| Command service | every loop | Acts on the latest received drive command |
+| Heartbeat LED | 100 ms | Blinks to show the loop is running |
+| IMU + filter | 10 ms (100 Hz) | Reads sensor and updates tilt angle |
+| Telemetry | 100 ms | Sends speed and angle over UART |
+| Command handler | every loop | Processes latest drive command |
 
 ### 5.2 Sensor Fusion
 
-A raw accelerometer angle is noisy when the robot moves, and a raw gyro angle drifts over time. The firmware combines them with a **complementary filter** using a coefficient of `0.995`:
+The gyroscope drifts over time and the accelerometer is noisy during motion, so we fused them with a complementary filter:
 
 ```c
 angle = 0.995 * (angle + gyro_rate * dt) + 0.005 * accel_angle
 ```
 
-The gyro term handles fast changes and the accelerometer slowly pulls out the drift. The filter runs at 100 Hz and produces the fused tilt angle that the balance loop runs on.
+The gyro handles the fast changes and the accelerometer corrects the drift slowly. Running at 100 Hz this gives a stable tilt angle to feed into the balance controller.
 
 ---
 
 ## 6. Communication & Remote Control
 
-The ESP8266 is connected to USART1 on the STM32. It runs as a transparent serial bridge — the STM32 sends and receives plain text commands and telemetry frames over UART, and the ESP8266 exposes that as a WiFi access point. A phone or laptop connects to the robot's WiFi network and opens a browser-based interface to drive the robot and watch live telemetry.
+The ESP8266 connects to USART1 on the STM32. It acts as a WiFi bridge — the robot creates its own access point and a phone or laptop can connect to it and open a browser page to send commands and watch live telemetry. We were able to successfully connect to the robot over WiFi, however we could not get the robot to respond to drive commands through that connection. The communication link was established but full end-to-end control was not achieved.
 
 ---
 
 ## 7. Balancing Control
 
-The balancing controller was designed around the fused tilt angle from the complementary filter, targeting a 100 Hz PID control loop to drive the motors and keep the tilt angle at zero. The PID was planned and partially implemented, however the robot was unable to achieve stable balancing during the course of the project. Hardware issues encountered during bring-up, including problems with the power rail reaching the MCU, prevented full end-to-end testing of the control loop. The design and logic are complete and documented here as the intended implementation.
+Since we were not able to get the robot driving as a complete system over WiFi, we did not reach the balancing stage of the project. The two-wheel self-balancing portion was never attempted. The motors were tested individually and confirmed to work correctly when driven directly with a PWM signal, so the hardware itself is functional. The balancing controller was not implemented.
 
 ---
 
 ## 8. Results
 
-The robot was fully designed and assembled — custom PCB, custom chassis, and firmware — but was ultimately unable to balance. The following was completed and verified:
+We completed the full hardware design and build — custom PCB, custom chassis, and firmware — but the robot did not operate as a full system. Here is where things stood at the end:
 
-- [x] Custom PCB designed and fabricated
-- [x] Chassis designed in OnShape and assembled
-- [x] STM32 firmware compiling and flashing successfully
-- [x] IMU reading and complementary filter implemented
-- [x] Motor driver responding to PWM commands
-- [x] ESP8266 WiFi link established
-- [ ] Balancing PID — implemented but not tuned; robot did not balance
-- [ ] Additional challenge layer — not reached
+- [x] PCB designed, fabricated, and assembled
+- [x] Chassis designed in OnShape and built
+- [x] Firmware compiling and flashing to the board
+- [x] IMU reading and complementary filter running
+- [x] Motors verified working individually with PWM signals
+- [x] ESP8266 WiFi connection established
+- [ ] Robot responding to drive commands over WiFi — not achieved
+- [ ] Two-wheel balancing — not attempted
 
-Despite not achieving balance, the project successfully demonstrated the full embedded design process from schematic to PCB to firmware, and all individual subsystems were brought up and tested independently.
+The individual subsystems were brought up and tested on their own. The gap was integrating them into a working full system.
 
 ---
 
 ## 9. Future Work
 
-- Resolve hardware power rail issue to enable full MCU bring-up
-- Tune the PID balancing controller with a working board
-- Add a browser-based live telemetry dashboard
-- Implement the additional challenge layer once balancing is stable
+- Debug why the robot was not responding to WiFi commands despite the connection working
+- Get the motors running through the full firmware stack, not just direct PWM
+- Attempt the two-wheel balancing once drive control is working
+- Tune a PID controller for balancing once the base system is functional
