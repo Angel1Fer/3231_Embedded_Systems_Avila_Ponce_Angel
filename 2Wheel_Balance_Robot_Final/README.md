@@ -43,9 +43,9 @@ Main components:
 | Microcontroller | STM32F401RBT6  |
 | Motor driver | TB6612FNG (dual H-bridge) | PWM + direction GPIO |
 | IMU | MPU6050 (3-axis accel + gyro) | I²C |
-| Wheel angle sensor | Magnetic encoder | I²C / Timer |
+| Wheel RPM sensor | Magnetic encoder | I²C / Timer |
 | Wireless link | ESP8266 | UART |
-| Motors | 2x DC gear motors | via TB6612 |
+| Motors | 2x DC motors |  |
 
 ---
 
@@ -90,19 +90,6 @@ The firmware was written in STM32CubeIDE. CubeMX handled the peripheral setup an
 - `imu.c` — MPU6050 driver and complementary filter
 - `wifi.c` — sending and receiving data over UART to the ESP8266
 
-### 5.1 Code
-
-We used a super-loop scheduler based on `HAL_GetTick()`. Each task checks if its interval has passed before running, so everything stays on its own timing without needing an RTOS:
-
-| Task | Rate | What it does |
-|---|---|---|
-| Heartbeat LED | 100 ms | Blinks to show the loop is running |
-| IMU + filter | 10 ms (100 Hz) | Reads sensor and updates tilt angle |
-| Telemetry | 100 ms | Sends speed and angle over UART |
-| Command handler | every loop | Processes latest drive command |
-
-
----
 
 ## 6. Communication & Remote Control
 
